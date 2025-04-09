@@ -92,7 +92,7 @@ OpenCV二维码扫码：有了上面的OpenCV二维码识别功能，基本的�
     }
     ```
 
-2. 在Module的 **build.gradle** 里面添加引入依赖项
+2. 在Module的 **build.gradle** 里面添加依赖项
 
     ```gradle
     // OpenCV基础库（*必须）
@@ -147,7 +147,7 @@ OpenCV二维码扫码：有了上面的OpenCV二维码识别功能，基本的�
 
 ### 初始化
 
-初始化 **OpenCV** 和 **WeChatQRCodeDetector** （建议在 **MainActivity** 的 **onCreate** 方法中进行初始化）
+初始化 **OpenCV** 和 **WeChatQRCodeDetector** （建议在 **MainActivity** 或 **Application** 的 **onCreate** 方法中进行初始化）
 
 #### 初始化OpenCV
 
@@ -377,10 +377,12 @@ class WeChatQRCodeActivity : WeChatCameraScanActivity() {
 
 ## 相关推荐
 
-#### [MLKit](https://github.com/jenly1314/MLKit) 一个强大易用的工具包。通过ML Kit您可以很轻松的实现文字识别、条码识别、图像标记、人脸检测、对象检测等功能。
-#### [ZXingLite](https://github.com/jenly1314/ZXingLite) 基于zxing实现的扫码库，优化扫码和生成二维码/条形码功能。
-#### [CameraScan](https://github.com/jenly1314/CameraScan) 一个简化扫描识别流程的通用基础库。
-#### [ViewfinderView](https://github.com/jenly1314/ViewfinderView) ViewfinderView一个取景视图：主要用于渲染扫描相关的动画效果。
+* [MLKit](https://github.com/jenly1314/MLKit) 一个强大易用的工具包。通过ML Kit您可以很轻松的实现文字识别、条码识别、图像标记、人脸检测、对象检测等功能。
+* [ZXingLite](https://github.com/jenly1314/ZXingLite) 基于zxing实现的扫码库，优化扫码和生成二维码/条形码功能。
+* [CameraScan](https://github.com/jenly1314/CameraScan) 一个简化扫描识别流程的通用基础库。
+* [ViewfinderView](https://github.com/jenly1314/ViewfinderView) ViewfinderView一个取景视图：主要用于渲染扫描相关的动画效果。
+* [LibYuv](https://github.com/jenly1314/libyuv) 基于Google的libyuv编译封装的YUV转换工具库，主要用途是在各种YUV与RGB之间进行相互转换、裁减、旋转、缩放、镜像等。
+* [LogX](https://github.com/jenly1314/LogX) 一个小而美的日志记录框架；好用不解释。
 
 <!-- end -->
 
@@ -391,27 +393,6 @@ class WeChatQRCodeActivity : WeChatCameraScanActivity() {
 * 更新ViewfinderView至v1.2.0
 * 使用[LogX](https://github.com/jenly1314/LogX) 来统一管理日志
 * 优化一些细节
-
-#### v2.1.0：2024-1-13
-* 更新OpenCV至v4.9.0
-* 更新CameraScan至v1.1.0
-* 更新compileSdkVersion至34
-* 更新Gradle至v8.0
-
-#### v2.0.1：2023-9-13
-* 更新CameraScan至v1.0.1
-* 更新ViewfinderView至v1.1.0
-
-#### v2.0.0：2023-8-14
-* wechat-qrcode-scanning和opencv-qrcode-scanning中移除原依赖（mlkit-camera-core），现改为依赖[CameraScan](https://github.com/jenly1314/CameraScan)
-* wechat-qrcode-scanning和opencv-qrcode-scanning添加默认依赖[ViewfinderView](https://github.com/jenly1314/ViewfinderView)
-* 优化扫描分析过程的性能体验（优化帧数据分析过程）
-
-#### v1.3.0：2023-4-16
-* 新增OpenCV二维码扫码识别库（opencv-qrcode和opencv-qrcode-scanning）
-* 更新mlkit-camera-core至v1.4.0
-* 更新compileSdkVersion至33
-* 更新Gradle至v7.5
 
 #### [查看更多版本日志](CHANGELOG.md)
 
