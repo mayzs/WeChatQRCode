@@ -352,7 +352,7 @@ class WeChatQRCodeActivity : WeChatCameraScanActivity() {
 | 二维码扫码识别 | opencv-qrcode-scanning | OpenCVScanningAnalyzer | OpenCVCameraScanActivity/OpenCVCameraScanFragment  |
 | 二维码扫码识别  | wechat-qrcode-scanning | WeChatScanningAnalyzer | WeChatCameraScanActivity/WeChatCameraScanFragment |
 
-更多使用详情，请查看[app](app)中的源码使用示例或直接查看 [API帮助文档](https://jitpack.io/com/github/jenly1314/WeChatQRCode/latest/javadoc/)
+更多使用详情，请查看[app](app)中的源码使用示例或直接查看 [API帮助文档](https://jenly1314.github.io/WeChatQRCode/api/)
 
 ## 其他
 
