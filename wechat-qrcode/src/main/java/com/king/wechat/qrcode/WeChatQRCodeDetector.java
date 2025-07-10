@@ -49,6 +49,7 @@ public final class WeChatQRCodeDetector {
 
     /**
      * 初始化 WeChatQRCode
+     *
      * @param context {@link Context}
      */
     private static void initWeChatQRCode(Context context) {
@@ -72,7 +73,7 @@ public final class WeChatQRCodeDetector {
                 // 模型文件只要有一个不存在，则遍历拷贝
                 for (String model : models) {
                     InputStream inputStream = context.getAssets()
-                            .open(MODEL_DIR + File.separatorChar + model);
+                        .open(MODEL_DIR + File.separatorChar + model);
                     File saveFile = new File(saveDir, model);
                     FileOutputStream outputStream = new FileOutputStream(saveFile);
                     byte[] buffer = new byte[4096];
@@ -83,14 +84,14 @@ public final class WeChatQRCodeDetector {
                     outputStream.flush();
                     inputStream.close();
                     outputStream.close();
-                    LogX.d("file: %s" , saveFile.getAbsolutePath());
+                    LogX.d("file: %s", saveFile.getAbsolutePath());
                 }
             }
             sWeChatQRCode = new WeChatQRCode(
-                    saveDirPath + File.separatorChar + models[0],
-                    saveDirPath + File.separatorChar + models[1],
-                    saveDirPath + File.separatorChar + models[2],
-                    saveDirPath + File.separatorChar + models[3]);
+                saveDirPath + File.separatorChar + models[0],
+                saveDirPath + File.separatorChar + models[1],
+                saveDirPath + File.separatorChar + models[2],
+                saveDirPath + File.separatorChar + models[3]);
             LogX.d("WeChatQRCode loaded successfully");
         } catch (Exception e) {
             LogX.e(e);
@@ -99,23 +100,49 @@ public final class WeChatQRCodeDetector {
 
     /**
      * 获取外部存储目录
+     *
      * @param context {@link Context}
-     * @param path 目录路径
+     * @param path    目录路径
      * @return 外部存储目录
      */
     private static String getExternalFilesDir(Context context, String path) {
         File[] files = context.getExternalFilesDirs(path);
         if (files != null && files.length > 0) {
             File file = files[0];
-            if(file != null) {
+            if (file != null) {
                 return file.getAbsolutePath();
             }
         }
         File file = context.getExternalFilesDir(path);
-        if(file == null) {
+        if (file == null) {
             file = new File(context.getFilesDir(), path);
         }
         return file.getAbsolutePath();
+    }
+
+    /**
+     * set scale factor
+     * QR code detector use neural network to detect QR.
+     * Before running the neural network, the input image is pre-processed by scaling.
+     * By default, the input image is scaled to an image with an area of 160000 pixels.
+     * The scale factor allows to use custom scale the input image:
+     * width = scaleFactor*width
+     * height = scaleFactor*width
+     * <p>
+     * scaleFactor valuse must be &gt; 0 and &lt;= 1, otherwise the scaleFactor value is set to -1
+     * and use default scaled to an image with an area of 160000 pixels.
+     *
+     * @param scalingFactor automatically generated
+     */
+    public void setScaleFactor(float scalingFactor) {
+        sWeChatQRCode.setScaleFactor(scalingFactor);
+    }
+
+    /**
+     * get scale factor
+     */
+    public float getScaleFactor() {
+        return sWeChatQRCode.getScaleFactor();
     }
 
     /**

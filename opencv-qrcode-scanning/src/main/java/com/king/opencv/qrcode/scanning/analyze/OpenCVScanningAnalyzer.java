@@ -2,6 +2,10 @@ package com.king.opencv.qrcode.scanning.analyze;
 
 import android.graphics.ImageFormat;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.camera.core.ImageProxy;
+
 import com.king.camera.scan.AnalyzeResult;
 import com.king.camera.scan.FrameMetadata;
 import com.king.camera.scan.analyze.Analyzer;
@@ -19,10 +23,6 @@ import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.camera.core.ImageProxy;
 
 /**
  * OpenCV二维码分析器：分析相机预览的帧数据，从中检测识别二维码
@@ -84,16 +84,16 @@ public class OpenCVScanningAnalyzer implements Analyzer<List<String>> {
             joinQueue.set(true);
         }
         final byte[] nv21Data = queue.poll();
-        if(nv21Data == null) {
+        if (nv21Data == null) {
             return;
         }
         AnalyzeResult<List<String>> result = null;
         try {
             ImageUtils.yuv_420_888toNv21(imageProxy, nv21Data);
             FrameMetadata frameMetadata = new FrameMetadata(
-                    imageProxy.getWidth(),
-                    imageProxy.getHeight(),
-                    imageProxy.getImageInfo().getRotationDegrees());
+                imageProxy.getWidth(),
+                imageProxy.getHeight(),
+                imageProxy.getImageInfo().getRotationDegrees());
             result = detectAndDecode(nv21Data, frameMetadata);
         } catch (Exception e) {
             LogX.w(e);
@@ -110,14 +110,14 @@ public class OpenCVScanningAnalyzer implements Analyzer<List<String>> {
     /**
      * 检测并识别二维码
      *
-     * @param nv21 nv21帧数据
+     * @param nv21          nv21帧数据
      * @param frameMetadata {@link FrameMetadata}
      * @return 返回识别的二维码结果
      */
     @Nullable
     private AnalyzeResult<List<String>> detectAndDecode(byte[] nv21, FrameMetadata frameMetadata) {
         Mat mat = new Mat(frameMetadata.getHeight() + frameMetadata.getHeight() / 2, frameMetadata.getWidth(), CvType.CV_8UC1);
-        mat.put(0,0, nv21);
+        mat.put(0, 0, nv21);
         Mat bgrMat = new Mat();
         Imgproc.cvtColor(mat, bgrMat, Imgproc.COLOR_YUV2BGR_NV21);
         mat.release();
@@ -127,7 +127,7 @@ public class OpenCVScanningAnalyzer implements Analyzer<List<String>> {
             final Mat points = new Mat();
 
             List<String> list = null;
-            if(isDetectMultiple) {
+            if (isDetectMultiple) {
                 list = new ArrayList<>();
                 mDetector.detectAndDecodeMulti(bgrMat, list, points);
             } else {
@@ -139,13 +139,13 @@ public class OpenCVScanningAnalyzer implements Analyzer<List<String>> {
             }
             bgrMat.release();
 
-            if(list != null && !list.isEmpty()) {
+            if (list != null && !list.isEmpty()) {
                 return new QRCodeAnalyzeResult<>(nv21, ImageFormat.NV21, frameMetadata, list, points);
             }
         } else {
             // 反之则需识别结果即可
             List<String> list = null;
-            if(isDetectMultiple) {
+            if (isDetectMultiple) {
                 list = new ArrayList<>();
                 mDetector.detectAndDecodeMulti(bgrMat, list);
             } else {
@@ -157,7 +157,7 @@ public class OpenCVScanningAnalyzer implements Analyzer<List<String>> {
             }
             bgrMat.release();
 
-            if(list != null && !list.isEmpty()) {
+            if (list != null && !list.isEmpty()) {
                 return new QRCodeAnalyzeResult<>(nv21, ImageFormat.NV21, frameMetadata, list);
             }
         }
@@ -166,7 +166,8 @@ public class OpenCVScanningAnalyzer implements Analyzer<List<String>> {
 
     /**
      * 旋转指定角度
-     * @param mat {@link Mat}
+     *
+     * @param mat      {@link Mat}
      * @param rotation 旋转角度
      */
     private void rotation(Mat mat, int rotation) {
@@ -177,9 +178,9 @@ public class OpenCVScanningAnalyzer implements Analyzer<List<String>> {
             // 然后再绕Y轴旋转180° （顺时针）
             Core.flip(mat, mat, 1);
         } else if (rotation == ROTATION_180) {
-            //将图片绕X轴旋转180°（顺时针）
+            // 将图片绕X轴旋转180°（顺时针）
             Core.flip(mat, mat, 0);
-            //将图片绕Y轴旋转180°（顺时针）
+            // 将图片绕Y轴旋转180°（顺时针）
             Core.flip(mat, mat, 1);
         } else if (rotation == ROTATION_270) {
             // 将图像逆时针旋转90°，然后再关于x轴对称

@@ -2,12 +2,14 @@ package com.king.wechat.qrcode.app
 
 import android.content.Intent
 import android.graphics.Point
-import android.util.Log
 import android.widget.ImageView
+import androidx.activity.addCallback
 import com.king.camera.scan.AnalyzeResult
 import com.king.camera.scan.CameraScan
 import com.king.camera.scan.analyze.Analyzer
 import com.king.camera.scan.util.PointUtils
+import com.king.logx.LogX
+import com.king.logx.logger.LogFormat
 import com.king.wechat.qrcode.scanning.WeChatCameraScanActivity
 import com.king.wechat.qrcode.scanning.analyze.WeChatScanningAnalyzer
 
@@ -25,12 +27,23 @@ class WeChatQRCodeActivity : WeChatCameraScanActivity() {
     override fun initUI() {
         super.initUI()
         ivResult = findViewById(R.id.ivResult)
+
+        onBackPressedDispatcher.addCallback(this) {
+            // 如果是结果点显示时，用户点击了返回键，则认为是取消选择当前结果，重新开始扫码
+            if (viewfinderView.isShowPoints) {
+                ivResult.setImageResource(0)
+                viewfinderView.showScanner()
+                cameraScan.setAnalyzeImage(true)
+            } else {
+                finish()
+            }
+        }
     }
 
     override fun onScanResultCallback(result: AnalyzeResult<List<String>>) {
         // 停止分析
         cameraScan.setAnalyzeImage(false)
-        Log.d(TAG, result.result.toString())
+        LogX.d(result.result.toString())
         val width = result.imageWidth
         val height = result.imageHeight
 
@@ -41,10 +54,10 @@ class WeChatQRCodeActivity : WeChatCameraScanActivity() {
             val points = ArrayList<Point>()
             result.points?.forEach { mat ->
                 // 扫码结果二维码的四个点（一个矩形）
-                Log.d(TAG, "point0: ${mat[0, 0][0]}, ${mat[0, 1][0]}")
-                Log.d(TAG, "point1: ${mat[1, 0][0]}, ${mat[1, 1][0]}")
-                Log.d(TAG, "point2: ${mat[2, 0][0]}, ${mat[2, 1][0]}")
-                Log.d(TAG, "point3: ${mat[3, 0][0]}, ${mat[3, 1][0]}")
+                LogX.format(LogFormat.PLAIN).d("point0: ${mat[0, 0][0]}, ${mat[0, 1][0]}")
+                LogX.format(LogFormat.PLAIN).d("point1: ${mat[1, 0][0]}, ${mat[1, 1][0]}")
+                LogX.format(LogFormat.PLAIN).d("point2: ${mat[2, 0][0]}, ${mat[2, 1][0]}")
+                LogX.format(LogFormat.PLAIN).d("point3: ${mat[3, 0][0]}, ${mat[3, 1][0]}")
 
                 val point0 = Point(mat[0, 0][0].toInt(), mat[0, 1][0].toInt())
                 val point1 = Point(mat[1, 0][0].toInt(), mat[1, 1][0].toInt())
@@ -76,7 +89,7 @@ class WeChatQRCodeActivity : WeChatCameraScanActivity() {
             //显示结果点信息
             viewfinderView.showResultPoints(points)
 
-            if(result.result.size == 1) {
+            if (result.result.size == 1) {
                 val intent = Intent()
                 intent.putExtra(CameraScan.SCAN_RESULT, result.result[0])
                 setResult(RESULT_OK, intent)
@@ -100,19 +113,6 @@ class WeChatQRCodeActivity : WeChatCameraScanActivity() {
 
     override fun getLayoutId(): Int {
         return R.layout.activity_wechat_qrcode
-    }
-
-    override fun onBackPressed() {
-        if (viewfinderView.isShowPoints) {// 如果是结果点显示时，用户点击了返回键，则认为是取消选择当前结果，重新开始扫码
-            ivResult.setImageResource(0)
-            viewfinderView.showScanner()
-            cameraScan.setAnalyzeImage(true)
-            return
-        }
-    }
-
-    companion object {
-        const val TAG = "WeChatQRCodeActivity"
     }
 
 }

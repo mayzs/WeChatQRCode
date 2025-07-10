@@ -36,11 +36,6 @@ android {
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_1_8.toString()
     }
-    packagingOptions {
-        resources {
-            excludes += ['META-INF/*.kotlin_module']
-        }
-    }
 
     lint {
         abortOnError false
@@ -48,9 +43,7 @@ android {
 
 }
 
-
 dependencies {
-    implementation "androidx.appcompat:appcompat:$versions.appcompat"
     implementation "com.google.android.material:material:$versions.material"
     implementation "androidx.core:core-ktx:$versions.coreKtx"
     implementation "androidx.constraintlayout:constraintlayout:$versions.constraintlayout"
@@ -61,7 +54,7 @@ dependencies {
 
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:$versions.lifecycleKtx"
 
-    implementation "com.github.jenly1314.AppUpdater:app-dialog:$versions.appDialog"
+    implementation "com.github.jenly1314.AppUpdater:app-dialog:$versions.appdialog"
 
     implementation project(path: ':opencv')
     implementation project(path: ':opencv-armv7a')

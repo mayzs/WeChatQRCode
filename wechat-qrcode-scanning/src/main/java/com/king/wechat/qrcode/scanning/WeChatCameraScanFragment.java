@@ -2,14 +2,14 @@ package com.king.wechat.qrcode.scanning;
 
 import android.view.View;
 
+import androidx.annotation.Nullable;
+
 import com.king.camera.scan.BaseCameraScanFragment;
 import com.king.camera.scan.analyze.Analyzer;
 import com.king.view.viewfinderview.ViewfinderView;
 import com.king.wechat.qrcode.scanning.analyze.WeChatScanningAnalyzer;
 
 import java.util.List;
-
-import androidx.annotation.Nullable;
 
 /**
  * 微信二维码扫描 - 相机扫描基类
@@ -53,7 +53,6 @@ public abstract class WeChatCameraScanFragment extends BaseCameraScanFragment<Li
      *
      * @return 默认返回{@code R.id.viewfinderView}, 如果不需要扫码框可以返回{@link View#NO_ID}
      */
-
     public int getViewfinderViewId() {
         return R.id.viewfinderView;
     }

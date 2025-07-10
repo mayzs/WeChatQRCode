@@ -2,14 +2,14 @@ package com.king.opencv.qrcode.scanning;
 
 import android.view.View;
 
+import androidx.annotation.Nullable;
+
 import com.king.camera.scan.BaseCameraScanFragment;
 import com.king.camera.scan.analyze.Analyzer;
 import com.king.opencv.qrcode.scanning.analyze.OpenCVScanningAnalyzer;
 import com.king.view.viewfinderview.ViewfinderView;
 
 import java.util.List;
-
-import androidx.annotation.Nullable;
 
 /**
  * OpenCV二维码扫描 - 相机扫描基类
@@ -54,7 +54,6 @@ public abstract class OpenCVCameraScanFragment extends BaseCameraScanFragment<Li
      *
      * @return 默认返回{@code R.id.viewfinderView}, 如果不需要扫码框可以返回{@link View#NO_ID}
      */
-
     public int getViewfinderViewId() {
         return R.id.viewfinderView;
     }
