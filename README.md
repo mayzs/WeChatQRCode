@@ -95,23 +95,23 @@ OpenCV二维码扫码：有了上面的OpenCV二维码识别功能，基本的�
 
     ```gradle
     // OpenCV基础库（*必须）
-    implementation 'com.github.jenly1314.WeChatQRCode:opencv:2.3.0'
+    implementation 'com.github.jenly1314.WeChatQRCode:opencv:2.4.0'
 
     // OpenCV的ABI（可选），根据你的需要选择想要支持的SO库架构（至少选一个）
-    implementation 'com.github.jenly1314.WeChatQRCode:opencv-armv7a:2.3.0'
-    implementation 'com.github.jenly1314.WeChatQRCode:opencv-armv64:2.3.0'
-    implementation 'com.github.jenly1314.WeChatQRCode:opencv-x86:2.3.0'
-    implementation 'com.github.jenly1314.WeChatQRCode:opencv-x86_64:2.3.0'
+    implementation 'com.github.jenly1314.WeChatQRCode:opencv-armv7a:2.4.0'
+    implementation 'com.github.jenly1314.WeChatQRCode:opencv-armv64:2.4.0'
+    implementation 'com.github.jenly1314.WeChatQRCode:opencv-x86:2.4.0'
+    implementation 'com.github.jenly1314.WeChatQRCode:opencv-x86_64:2.4.0'
 
     // OpenCV二维码识别功能（可选）
-    implementation 'com.github.jenly1314.WeChatQRCode:opencv-qrcode:2.3.0'
+    implementation 'com.github.jenly1314.WeChatQRCode:opencv-qrcode:2.4.0'
     // OpenCV二维码扫码功能（可选）
-    implementation 'com.github.jenly1314.WeChatQRCode:opencv-qrcode-scanning:2.3.0'
+    implementation 'com.github.jenly1314.WeChatQRCode:opencv-qrcode-scanning:2.4.0'
 
     // 微信二维码识别功能（可选）
-    implementation 'com.github.jenly1314.WeChatQRCode:wechat-qrcode:2.3.0'
+    implementation 'com.github.jenly1314.WeChatQRCode:wechat-qrcode:2.4.0'
     // 微信二维码扫码功能（可选）
-    implementation 'com.github.jenly1314.WeChatQRCode:wechat-qrcode-scanning:2.3.0'
+    implementation 'com.github.jenly1314.WeChatQRCode:wechat-qrcode-scanning:2.4.0'
 
     ```
 
@@ -229,74 +229,68 @@ Log.d(TAG, "point3: ${points[0, 3][0]}, ${points[0, 3][1]}")
 class WeChatQRCodeActivity : WeChatCameraScanActivity() {
 
     override fun onScanResultCallback(result: AnalyzeResult<List<String>>) {
-        if (result.result.isNotEmpty()) {
-            // 停止分析
-            cameraScan.setAnalyzeImage(false)
-            Log.d(TAG, result.result.toString())
-            // 当初始化 WeChatScanningAnalyzer 时，如果是需要二维码的位置信息，则可通过 WeChatScanningAnalyzer.QRCodeAnalyzeResult 获取
-            if (result is WeChatScanningAnalyzer.QRCodeAnalyzeResult) { // 如果需要处理结果二维码的位置信息
+        // 停止分析
+        cameraScan.setAnalyzeImage(false)
+        LogX.d(result.result.toString())
+        // 当初始化 WeChatScanningAnalyzer 时，如果是需要二维码的位置信息，则可通过 WeChatScanningAnalyzer.QRCodeAnalyzeResult 获取
+        if (result is WeChatScanningAnalyzer.QRCodeAnalyzeResult) { // 如果需要处理结果二维码的位置信息
 
-                val buffer = StringBuilder()
-                val bitmap = result.bitmap?.drawRect { canvas, paint ->
-                    // 扫码结果可能有多个
-                    for ((index, data) in result.result.withIndex()) {
-                        buffer.append("[$index] ").append(data).append("\n")
-                        result.points?.forEach { mat ->
-                            // 扫码结果二维码的四个点
-                            Log.d(TAG, "point0: ${mat[0, 0][0]}, ${mat[0, 1][0]}")
-                            Log.d(TAG, "point1: ${mat[1, 0][0]}, ${mat[1, 1][0]}")
-                            Log.d(TAG, "point2: ${mat[2, 0][0]}, ${mat[2, 1][0]}")
-                            Log.d(TAG, "point3: ${mat[3, 0][0]}, ${mat[3, 1][0]}")
-
-                            val path = Path()
-                            path.moveTo(mat[0, 0][0].toFloat(), mat[0, 1][0].toFloat())
-                            path.lineTo(mat[1, 0][0].toFloat(), mat[1, 1][0].toFloat())
-                            path.lineTo(mat[2, 0][0].toFloat(), mat[2, 1][0].toFloat())
-                            path.lineTo(mat[3, 0][0].toFloat(), mat[3, 1][0].toFloat())
-                            path.lineTo(mat[0, 0][0].toFloat(), mat[0, 1][0].toFloat())
-                            // 将二维码位置在图片上框出来
-                            canvas.drawPath(path, paint)
-                        }
-                    }
+            val buffer = StringBuilder()
+            val bitmap = result.bitmap?.drawRect { canvas, paint ->
+                // 扫码结果可能有多个
+                result.result.forEachIndexed { index, data ->
+                    buffer.append("[$index] ").append(data).append("\n")
                 }
 
-                val config = AppDialogConfig(this, R.layout.qrcode_result_dialog).apply {
-                    content = buffer
-                    onClickConfirm = View.OnClickListener {
-                        AppDialog.INSTANCE.dismissDialog()
-                        // 继续扫码分析
-                        cameraScan.setAnalyzeImage(true)
-                    }
-                    onClickCancel = View.OnClickListener {
-                        AppDialog.INSTANCE.dismissDialog()
-                        finish()
-                    }
-                    val imageView = getView<ImageView>(R.id.ivDialogContent)
-                    imageView.setImageBitmap(bitmap)
-                }
-                AppDialog.INSTANCE.showDialog(config, false)
+                result.points?.forEach { mat ->
+                    // 扫码结果二维码的四个点（一个矩形）
+                    LogX.format(LogFormat.PLAIN).d("point0: ${mat[0, 0][0]}, ${mat[0, 1][0]}")
+                    LogX.format(LogFormat.PLAIN).d("point1: ${mat[1, 0][0]}, ${mat[1, 1][0]}")
+                    LogX.format(LogFormat.PLAIN).d("point2: ${mat[2, 0][0]}, ${mat[2, 1][0]}")
+                    LogX.format(LogFormat.PLAIN).d("point3: ${mat[3, 0][0]}, ${mat[3, 1][0]}")
 
-            } else {
-                // 一般需求都是识别一个码，所以这里取第0个就可以；有识别多个码的需求，可以取全部
-                val text = result.result[0]
-                val intent = Intent()
-                intent.putExtra(CameraScan.SCAN_RESULT, text)
-                setResult(RESULT_OK, intent)
-                finish()
+                    val path = Path()
+                    path.moveTo(mat[0, 0][0].toFloat(), mat[0, 1][0].toFloat())
+                    path.lineTo(mat[1, 0][0].toFloat(), mat[1, 1][0].toFloat())
+                    path.lineTo(mat[2, 0][0].toFloat(), mat[2, 1][0].toFloat())
+                    path.lineTo(mat[3, 0][0].toFloat(), mat[3, 1][0].toFloat())
+                    path.lineTo(mat[0, 0][0].toFloat(), mat[0, 1][0].toFloat())
+                    // 将二维码位置在图片上框出来
+                    canvas.drawPath(path, paint)
+                }
+
             }
 
+            val config = AppDialogConfig(this, R.layout.qrcode_result_dialog).apply {
+                content = buffer
+                onClickConfirm = View.OnClickListener {
+                    AppDialog.dismissDialog()
+                    // 继续扫码分析
+                    cameraScan.setAnalyzeImage(true)
+                }
+                onClickCancel = View.OnClickListener {
+                    AppDialog.dismissDialog()
+                    finish()
+                }
+                viewHolder.setImageBitmap(R.id.ivDialogContent, bitmap)
+            }
+            AppDialog.showDialog(config, false)
+
+        } else {
+            // 一般需求都是识别一个码，所以这里取第0个就可以；有识别多个码的需求，可以取全部
+            val text = result.result[0]
+            val intent = Intent()
+            intent.putExtra(CameraScan.SCAN_RESULT, text)
+            setResult(RESULT_OK, intent)
+            finish()
         }
     }
 
-    override fun createAnalyzer(): Analyzer<MutableList<String>>? {
+    override fun createAnalyzer(): Analyzer<MutableList<String>> {
         // 分析器默认不会返回结果二维码的位置信息
 //        return WeChatScanningAnalyzer()
         // 如果需要返回结果二维码位置信息，则初始化分析器时，参数传 true 即可
         return WeChatScanningAnalyzer(true)
-    }
-
-    companion object {
-        const val TAG = "WeChatQRCodeActivity"
     }
 
 }
@@ -387,12 +381,10 @@ class WeChatQRCodeActivity : WeChatCameraScanActivity() {
 
 ## 版本日志
 
-#### v2.3.0：2025-7-10
-* 迁移发布至 **Central Portal** [相关公告](https://central.sonatype.org/pages/ossrh-eol/#logging-in-to-central-portal)
-* 更新CameraScan至v1.3.1
-* 更新ViewfinderView至v1.4.0
-* 更新LogX至v1.2.0
-* 更新Gradle至v8.5
+#### v2.4.0：2025-10-21
+* 适配Android 15+，支持 16KB 页面大小
+* 更新OpenCV至v4.12.0
+* 更新Gradle至v8.6
 
 #### [查看更多版本日志](CHANGELOG.md)
 

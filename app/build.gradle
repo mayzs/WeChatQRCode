@@ -17,7 +17,7 @@ android {
 
         ndk {
             //设置支持的 SO 库架构（开发者可以根据需要，选择一个或多个平台的so）
-            abiFilters 'armeabi-v7a' // , 'arm64-v8a', 'x86', 'x86_64'
+            abiFilters 'arm64-v8a' // 'armeabi-v7a' , 'x86', 'x86_64'
         }
     }
 
@@ -57,8 +57,9 @@ dependencies {
     implementation "com.github.jenly1314.AppUpdater:app-dialog:$versions.appdialog"
 
     implementation project(path: ':opencv')
-    implementation project(path: ':opencv-armv7a')
-//    implementation project(path: ':opencv-armv64')
+
+    implementation project(path: ':opencv-armv64')
+//    implementation project(path: ':opencv-armv7a')
 //    implementation project(path: ':opencv-x86')
 //    implementation project(path: ':opencv-x86_64')
 

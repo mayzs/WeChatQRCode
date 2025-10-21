@@ -58,18 +58,17 @@ class OpenCVQRCodeActivity : OpenCVCameraScanActivity() {
             val config = AppDialogConfig(this, R.layout.qrcode_result_dialog).apply {
                 content = buffer
                 onClickConfirm = View.OnClickListener {
-                    AppDialog.INSTANCE.dismissDialog()
+                    AppDialog.dismissDialog()
                     // 继续扫码分析
                     cameraScan.setAnalyzeImage(true)
                 }
                 onClickCancel = View.OnClickListener {
-                    AppDialog.INSTANCE.dismissDialog()
+                    AppDialog.dismissDialog()
                     finish()
                 }
-                val imageView = getView<ImageView>(R.id.ivDialogContent)
-                imageView.setImageBitmap(bitmap)
+                viewHolder.setImageBitmap(R.id.ivDialogContent, bitmap)
             }
-            AppDialog.INSTANCE.showDialog(config, false)
+            AppDialog.showDialog(config, false)
 
         } else {
             // 一般需求都是识别一个码，所以这里取第0个就可以；有识别多个码的需求，可以取全部

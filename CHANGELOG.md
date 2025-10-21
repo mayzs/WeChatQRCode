@@ -1,5 +1,10 @@
 ## 版本日志
 
+#### v2.4.0：2025-10-21
+* 适配Android 15+，支持 16KB 页面大小
+* 更新OpenCV至v4.12.0
+* 更新Gradle至v8.6
+
 #### v2.3.0：2025-7-10
 * 迁移发布至 **Central Portal** [相关公告](https://central.sonatype.org/pages/ossrh-eol/#logging-in-to-central-portal)
 * 更新CameraScan至v1.3.1
