@@ -58,7 +58,7 @@
 //
 // - Use find_package() in app/CMakeLists.txt:
 //
-//   find_package(OpenCV 4.9 REQUIRED java)
+//   find_package(OpenCV 4.12 REQUIRED java)
 //   ...
 //   target_link_libraries(native-lib ${OpenCV_LIBRARIES})
 //
@@ -102,13 +102,6 @@ android {
         minSdk build_versions.minSdk
         targetSdk build_versions.targetSdk
 
-//        externalNativeBuild {
-//            cmake {
-//                cppFlags "-std=c++11"
-//                arguments "-DANDROID_STL=c++_shared"
-//                targets "opencv_jni_shared"
-//            }
-//        }
     }
 
     buildTypes {
@@ -127,32 +120,10 @@ android {
     }
 
     buildFeatures {
-        aidl true
         buildConfig true
     }
-//    prefab {
-//        opencv_jni_shared {
-//            headers "native/jni/include"
-//        }
-//    }
 
-    sourceSets {
-        main {
-//            jniLibs.srcDirs = ['native/libs']
-            java.srcDirs = ['java/src']
-            aidl.srcDirs = ['java/src']
-            res.srcDirs = ['java/res']
-            manifest.srcFile 'java/AndroidManifest.xml'
-        }
-    }
-
-//    externalNativeBuild {
-//        cmake {
-//            path (project.projectDir.toString() + '/libcxx_helper/CMakeLists.txt')
-//        }
-//    }
-//
-//    ndkVersion '26.0.10792818'
+//    ndkVersion '29.0.14206865'
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
