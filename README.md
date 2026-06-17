@@ -435,13 +435,13 @@ class WeChatQRCodeActivity : WeChatCameraScanActivity() {
 
 **wechat-qrcode-scanning**
 
-扫描识别二维码实现示例：通过直接继承 WeChatCameraScanActivity 实现的示例 [WeChatQRCodeActivity](app/src/main/java/com/king/wechat/qrcode/app/WeChatQRCodeActivity.kt)
+扫描识别二维码实现示例：通过直接继承 WeChatCameraScanActivity 实现的示例 [WeChatQRCodeActivity](app/src/main/kotlin/com/king/wechat/qrcode/app/WeChatQRCodeActivity.kt)
 
-扫描识别多个二维码实现示例：通过直接继承 WeChatCameraScanActivity 实现的示例 [WeChatMultiQRCodeActivity](app/src/main/java/com/king/wechat/qrcode/app/WeChatMultiQRCodeActivity.kt)
+扫描识别多个二维码实现示例：通过直接继承 WeChatCameraScanActivity 实现的示例 [WeChatMultiQRCodeActivity](app/src/main/kotlin/com/king/wechat/qrcode/app/WeChatMultiQRCodeActivity.kt)
 
 **opencv-qrcode-scanning**
 
-扫描识别二维码实现示例：通过直接继承 OpenCVCameraScanActivity 实现的示例 [OpenCVQRCodeActivity](app/src/main/java/com/king/wechat/qrcode/app/OpenCVQRCodeActivity.kt)
+扫描识别二维码实现示例：通过直接继承 OpenCVCameraScanActivity 实现的示例 [OpenCVQRCodeActivity](app/src/main/kotlin/com/king/wechat/qrcode/app/OpenCVQRCodeActivity.kt)
 
 ### 版本变化说明
 
