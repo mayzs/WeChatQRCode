@@ -11,8 +11,10 @@ android {
         applicationId = "com.king.wechat.qrcode.app"
         minSdk = libs.versions.min.sdk.get().toInt()
         targetSdk = libs.versions.target.sdk.get().toInt()
+
         versionCode = properties["VERSION_CODE"].toString().toInt()
         versionName = properties["VERSION_NAME"].toString()
+
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         ndk {

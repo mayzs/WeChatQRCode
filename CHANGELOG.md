@@ -1,5 +1,13 @@
 ## 版本日志
 
+#### v2.6.0：2026-6-17
+- 项目中的 Java 代码已全面转为 Kotlin 实现（`opencv`模块除外）
+- 新增数据类：`DecodeResult` 并提供函数：`decodeResult.getVertexPoints()`来简化获取二维码位置点
+- 新增函数：`WeChatQRCodeDetector.detectAndDecodeResult(...)` 返回：`DecodeResult`对象
+- 新增函数：`openCVQRCodeDetector.detectAndDecodeResult(...)` 返回：`DecodeResult`对象
+- 更新CameraScan至v1.5.0
+- 更新LogX至v1.3.0
+
 #### v2.5.0：2026-3-15
 - 更新CameraScan至v1.4.1
 - 更新minSdk至23
